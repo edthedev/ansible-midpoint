@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # vagrant box add https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box 
   # config.vm.box = "centos6" # https://github.com/2creatives/vagrant-centos/releases/download/v6.5.1/centos65-x86_64-20131205.box 
 
-  config.vm.box = "miurahr/centos-6.4"
+  config.vm.box = "richburroughs/centos64"
 
   config.vm.network :forwarded_port, guest: 80, host: 8080
 
