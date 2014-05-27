@@ -1,0 +1,25 @@
+---
+# Based on https://wiki.evolveum.com/display/midPoint/Installing+midPoint+from+Binary+Distribution+v2.2
+- hosts: all
+  gather_facts: False
+  sudo: yes
+  vars:
+    install_root: /home/vagrant/midpoint
+    midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
+    midpoint_archive: midpoint-2.2.tar.gz
+  tasks:
+    - include: 
+       - jdk7.yml
+       - tomcat.yml
+
+    - name: Download Midpoint archive
+    command: 'wget -q -O {{midpoint_archive}} --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F" {{midpoint_download}} creates={{midpoint_archive}}' 
+
+    - name: Extract Midpoint archive
+    command: "tar -xzf {{midpoint_archive}} -C {{install_root}} creates={{install_root}}/midpoint"
+
+    - name: Set JAVA_OPTS
+    shell: echo "TODO: /link updated catalina.sh script from this deploy...add modified version to this deploy"
+
+    - name: deploy midpoint
+    file: state=link source=midpoint.war dest=/tomcat/webapps/midpoint.war
