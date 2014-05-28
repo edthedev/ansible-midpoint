@@ -1,5 +1,6 @@
 ---
 # Based on https://wiki.evolveum.com/display/midPoint/Installing+midPoint+from+Binary+Distribution+v2.2
+#    - tomcat.yml
 - hosts: all
   gather_facts: False
   sudo: yes
@@ -8,10 +9,21 @@
     midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
     midpoint_archive: midpoint-2.2.tar.gz
     midpoint_war: /home/vagrant/midpoint-2.2/war/midpoint.war
+    java_download: http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jdk-7u45-linux-x64.tar.gz
+    java_name: jdk1.7.0_45
+    download_folder: /usr/src
+    java_archive: "{{download_folder}}/{{java_name}}.tar.gz"
+    java_folder: /usr/lib/jvm
+    java_alias: java-7-oracle
   tasks:
-    # - include: 
-    #   - jdk7.yml
-    #   - tomcat.yml
+# - include: jdk7.yml
+    - name: install java and tomcat
+      yum: pkg={{ item }}
+      with_items:
+       - java-1.7.0-openjdk.x86_64
+       - tomcat6 
+       - tomcat6-webapps 
+       - tomcat6-admin-webapps
     - name: Download Midpoint archive
       shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
 
