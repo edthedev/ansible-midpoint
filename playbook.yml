@@ -24,6 +24,15 @@
        - tomcat6 
        - tomcat6-webapps 
        - tomcat6-admin-webapps
+
+    - name: open port 8080 
+      copy: src=iptables dest=/etc/syconfig/iptables
+      notify: restart iptables
+
+    - name: restart iptables
+      action: service name=iptables state=restarted
+      
+
     - name: Download Midpoint archive
       shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
 
