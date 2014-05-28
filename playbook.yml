@@ -7,7 +7,7 @@
   vars:
     install_root: /home/vagrant
     midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
-    midpoint_archive: midpoint-2.2.tar.gz
+    midpoint_archive: sources/midpoint-2.2.1-dist.zip
     midpoint_war: /home/vagrant/midpoint-2.2/war/midpoint.war
     java_download: http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jdk-7u45-linux-x64.tar.gz
     java_name: jdk1.7.0_45
@@ -26,17 +26,17 @@
        - tomcat6-admin-webapps
 
     - name: open port 8080 
-      copy: src=iptables dest=/etc/syconfig/iptables
+      copy: src=iptables dest=/etc/sysconfig/iptables
       notify: restart iptables
 
     - name: restart iptables
       action: service name=iptables state=restarted
       
-
-    - name: Download Midpoint archive
-      shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
+    # - name: Download Midpoint archive
+    #   shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
 
     - name: Extract Midpoint archive
+      unarchive: creates={{install_root}}/midpoint/foo src={{midpoint_archive}} dest={{install_root}}/midpoint
       shell: "tar -xzf {{midpoint_archive}} -C {{install_root}} creates={{install_root}}/midpoint"
 
     #- name: Set JAVA_OPTS
