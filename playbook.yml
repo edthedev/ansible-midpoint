@@ -25,6 +25,14 @@
        - tomcat6-webapps 
        - tomcat6-admin-webapps
 
+    - name: install python selinux libs
+      yum: pkg={{ item }}
+      with_items:
+       - libselinux-python
+
+    - name: calm down selinux
+      selinux: state=disabled
+
     - name: open port 8080 
       copy: src=iptables dest=/etc/sysconfig/iptables
       notify: restart iptables
@@ -37,7 +45,6 @@
 
     - name: Extract Midpoint archive
       unarchive: creates={{install_root}}/midpoint/foo src={{midpoint_archive}} dest={{install_root}}/midpoint
-      shell: "tar -xzf {{midpoint_archive}} -C {{install_root}} creates={{install_root}}/midpoint"
 
     #- name: Set JAVA_OPTS
     #shell: echo "TODO: /link updated catalina.sh script from this deploy...add modified version to this deploy"
