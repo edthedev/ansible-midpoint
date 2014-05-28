@@ -15,14 +15,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "richburroughs/centos64"
 
-  config.vm.network :forwarded_port, guest: 80, host: 8080
+  # config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
 
   config.vm.provider "virtualbox" do |v|
-    # v.memory = 4096
-    v.cpus = 2
+    v.memory = 4096
+    # v.cpus = 2
   end
 
   config.vm.provision "ansible" do |ansible|
+    ansible.verbose = 'vv'
+	# ansible.start_at_task = 'foo'
     ansible.playbook = "playbook.yml"
   end
 
