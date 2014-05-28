@@ -4,9 +4,10 @@
   gather_facts: False
   sudo: yes
   vars:
-    install_root: /home/vagrant/midpoint
+    install_root: /home/vagrant
     midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
     midpoint_archive: midpoint-2.2.tar.gz
+    midpoint_war: /home/vagrant/midpoint-2.2/war/midpoint.war
   tasks:
     # - include: 
     #   - jdk7.yml
@@ -14,11 +15,11 @@
     - name: Download Midpoint archive
       shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
 
-    #- name: Extract Midpoint archive
-    #shell: "tar -xzf {{midpoint_archive}} -C {{install_root}} creates={{install_root}}/midpoint"
+    - name: Extract Midpoint archive
+      shell: "tar -xzf {{midpoint_archive}} -C {{install_root}} creates={{install_root}}/midpoint"
 
     #- name: Set JAVA_OPTS
     #shell: echo "TODO: /link updated catalina.sh script from this deploy...add modified version to this deploy"
 
     - name: deploy midpoint
-      file: state=link source=midpoint.war dest=/tomcat/webapps/midpoint.war
+      file: state=link src={{midpoint_war}} dest=/tomcat/webapps/midpoint.war
