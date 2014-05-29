@@ -36,11 +36,20 @@ Setup
 Edit catalina.sh:: 
 
    ...
-   JAVA_OPTS="$JAVA_OPTS -Dmidpoint.home=/opt/midpoint -XX:MaxPermSize=256m"
+   JAVA_OPTS="$JAVA_OPTS -Dmidpoint.home=/opt/midpoint"
    ...
 
+5. Restart Tomcat::
 
-Then visit localhost:8080 in Firefox.
+   sudo service tomcat6 restart
+
+6. Enjoy the Tomcat log file.::
+
+   vi /var/log/tomcat6/catalina.out
+
+7. Visit MidPoint Admin on localhost_admin_ site in Firefox.
+
+.. _localhost_admin: http://localhost:8080/midpoint/admin/
 
 Tomcat Notes
 -------------
