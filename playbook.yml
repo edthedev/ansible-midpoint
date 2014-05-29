@@ -33,12 +33,8 @@
     - name: calm down selinux
       selinux: state=disabled
 
-    - name: open port 8080 
-      copy: src=iptables dest=/etc/sysconfig/iptables
-      notify: restart iptables
-
-    - name: restart iptables
-      action: service name=iptables state=restarted
+    - name: stop iptables to open port 8080
+      action: service name=iptables state=stopped
       
     # - name: Download Midpoint archive
     #   shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
