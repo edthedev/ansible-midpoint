@@ -17,7 +17,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.verbose = 'vv'
-	# ansible.start_at_task = 'foo'
+	ansible.start_at_task = 'begin midpoint'
+	# ansible.start_at_task = 'extract midpoint'
+	# ansible.start_at_task = 'deploy midpoint'
     ansible.playbook = "playbook.yml"
   end
 
