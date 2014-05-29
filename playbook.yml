@@ -5,7 +5,7 @@
   gather_facts: False
   sudo: yes
   vars:
-    install_root: /home/vagrant
+    midpoint_root: /home/vagrant
     midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
     midpoint_archive: sources/midpoint-2.2.1-dist.zip
     midpoint_war: /home/vagrant/midpoint-2.2/war/midpoint.war
@@ -16,19 +16,19 @@
     java_folder: /usr/lib/jvm
     java_alias: java-7-oracle
   tasks:
-# - include: jdk7.yml
-    - name: install java and tomcat
-      yum: pkg={{ item }}
-      with_items:
-       - java-1.7.0-openjdk.x86_64
-       - tomcat6 
-       - tomcat6-webapps 
-       - tomcat6-admin-webapps
-
     - name: install python selinux libs
       yum: pkg={{ item }}
       with_items:
        - libselinux-python
+
+    - name: install midpoint prerequisites 
+      yum: pkg={{ item }}
+      with_items:
+       - unzip.x86_64
+       - java-1.7.0-openjdk.x86_64
+       - tomcat6 
+       - tomcat6-webapps 
+       - tomcat6-admin-webapps
 
     - name: calm down selinux
       selinux: state=disabled
@@ -39,8 +39,11 @@
     # - name: Download Midpoint archive
     #   shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
 
+    - name: ensure isntall root exists
+      file: dest={{midpoint_root}} state=directory
+
     - name: Extract Midpoint archive
-      unarchive: creates={{install_root}}/midpoint/foo src={{midpoint_archive}} dest={{install_root}}/midpoint
+      unarchive: creates={{midpoint_root}}/foo src={{midpoint_archive}} dest={{midpoint_root}}
 
     #- name: Set JAVA_OPTS
     #shell: echo "TODO: /link updated catalina.sh script from this deploy...add modified version to this deploy"
