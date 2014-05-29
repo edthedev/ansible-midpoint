@@ -6,10 +6,11 @@
   sudo: yes
   vars:
     install_root: /home/vagrant
-    midpoint_root: "{{install_root}}/midpoint-2.2.1"
+    midpoint_binaries: "{{install_root}}/midpoint-2.2.1"
     midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
     midpoint_archive: sources/midpoint-2.2.1-dist.zip
-    midpoint_war: "{{midpoint_root}}/war/midpoint.war"
+    midpoint_war: "{{midpoint_binaries}}/war/midpoint.war"
+    midpoint_home: "/opt/midpoint"
   tasks:
     - name: install python selinux libs
       yum: pkg={{ item }}
@@ -45,6 +46,9 @@
 
     - name: deploy midpoint
       file: state=link src={{midpoint_war}} dest=/var/lib/tomcat6/webapps/midpoint.war
+
+    - name: midpoint home exists 
+      file: dest={{midpoint_home}} state=directory
 
     - name: start tomcat
       action: service name=tomcat6 state=started

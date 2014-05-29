@@ -27,12 +27,25 @@ Setup
 	vagrant up
 	curl localhost:8080
 
+4. Configure Tomcat::
+
+   vagrant ssh 
+   vim /usr/share/tomcat6/catalina.sh
+   sudo vi /etc/tomcat6/tomcat6.conf
+
+Edit catalina.sh:: 
+
+   ...
+   JAVA_OPTS="$JAVA_OPTS -Dmidpoint.home=/opt/midpoint -XX:MaxPermSize=256m"
+   ...
+
+
 Then visit localhost:8080 in Firefox.
 
 Tomcat Notes
 -------------
 Tomcat Service Config: /etc/tomcat6 (main config directory)
-Release Notes        : ﻿/usr/share/doc/tomcat*
+Release Notes        : /usr/share/doc/tomcat*
 Bin Directory        : /usr/share/tomcat6
 Webapps              : /var/lib/tomcat6/webapps
 Logs                 : /var/log/tomcat6
