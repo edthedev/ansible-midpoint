@@ -8,6 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Reload Vagrant file every time we vagrant up
   config.vm.box_check_update = true
+  config.vm.hostname = 'vagrant-midpoint-' + ENV['USER']
 
   config.vm.box = "richburroughs/centos64"
   config.vm.provider "virtualbox" do |v|

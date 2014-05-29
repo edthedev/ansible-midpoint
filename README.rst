@@ -19,7 +19,10 @@ Setup
 	git clone http://github.com:edthedev/ansible-midpoint.git
 	mkdir midpoint/sources
 
-2. Download Midpoint binaries into the sources directory. Ensure it is named `midpoint-2.2.1-dist.zip`, or update playbook.yml to match the new name.
+2. Download Midpoint binaries into the sources directory.
+ 
+   Unzip the file to `sources/midpoint-2.2.1/`.
+   If necessary, update the `midpoint_war variable` in `playbook.yml`. 
 
 3. ::
 

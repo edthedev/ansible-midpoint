@@ -5,11 +5,9 @@
   gather_facts: False
   sudo: yes
   vars:
-    install_root: /home/vagrant
-    midpoint_binaries: "{{install_root}}/midpoint-2.2.1"
-    midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
+    # midpoint_download: http://www.evolveum.com/downloads/midpoint/2.2/midpoint-2.2.tar.gz
     midpoint_archive: sources/midpoint-2.2.1-dist.zip
-    midpoint_war: "{{midpoint_binaries}}/war/midpoint.war"
+    midpoint_war: sources/midpoint-2.2.1/war/midpoint.war  
     midpoint_home: "/opt/midpoint"
   tasks:
     - name: install python selinux libs
@@ -36,16 +34,17 @@
     #   shell: "wget -q -O '{{midpoint_archive}}' --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http://www.oracle.com/' '{{midpoint_download}}' creates='{{midpoint_archive}}' "
 
     - name: begin midpoint 
-      file: dest={{install_root}} state=directory
+      file: dest={{midpoint_home}} state=directory
+      sudo: no
 
-    - name: extract midpoint
-      unarchive: creates={{midpoint_war}} src={{midpoint_archive}} dest={{install_root}}
+    - name: deploy midpoint config
+      unarchive: creates=/opt/midpoint/config.xml src={{midpoint_archive}} dest={{midpoint_home}}
 
-    #- name: Set JAVA_OPTS
-    #shell: echo "TODO: /link updated catalina.sh script from this deploy...add modified version to this deploy"
+    - name: deploy midpoint war
+      copy: src={{midpoint_war}} dest=/var/lib/tomcat6/webapps/midpoint.war backup=yes force=yes
 
-    - name: deploy midpoint
-      file: state=link src={{midpoint_war}} dest=/var/lib/tomcat6/webapps/midpoint.war
+    - name: midpoint.war permissions
+      file: dest=/var/lib/tomcat6/webapps/midpoint.war group=tomcat owner=tomcat
 
     - name: midpoint home exists 
       file: dest={{midpoint_home}} state=directory
